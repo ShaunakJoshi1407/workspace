@@ -26,13 +26,14 @@ nameReference:
     kind: Cluster
 - kind: AWSManagedControlPlane
   group: controlplane.cluster.x-k8s.io
-  version: v1beta1
+  version: v1beta2
   fieldSpecs:
   - path: spec/controlPlaneRef/name
     kind: Cluster
 - kind: AWSManagedCluster
   group: infrastructure.cluster.x-k8s.io
   version: v1beta2
+  fieldSpecs:
   - path: spec/infrastructureRef/name
     kind: Cluster
 - kind: AWSMachine
@@ -88,12 +89,6 @@ nameReference:
   - path: spec/machineTemplate/infrastructureRef/name
     kind: KubeadmControlPlane
 - kind: AWSManagedMachinePool
-  group: infrastructure.cluster.x-k8s.io
-  version: v1beta1
-  fieldSpecs:
-  - path: spec/template/spec/infrastructureRef/name
-    kind: MachinePool
-- kind: AWSMachinePool
   group: infrastructure.cluster.x-k8s.io
   version: v1beta1
   fieldSpecs:
