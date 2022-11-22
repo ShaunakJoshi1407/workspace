@@ -64,7 +64,7 @@ nameReference:
     kind: MachineDeployment
 - kind: EKSConfigTemplate
   group: bootstrap.cluster.x-k8s.io
-  version: v1beta1
+  version: v1beta2
   fieldSpecs:
   - path: spec/template/spec/bootstrap/configRef/name
     kind: MachineDeployment
