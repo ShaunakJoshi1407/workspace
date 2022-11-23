@@ -1,5 +1,0 @@
-resources:
-- my-cluster.yaml
-
-configurations:
-- configurations.yaml
