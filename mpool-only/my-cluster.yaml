@@ -120,8 +120,8 @@ spec:
       cluster.x-k8s.io/control-plane: ""
   unhealthyConditions:
   - status: Unknown
-    timeout: 300s
+    timeout: 5m0s
     type: Ready
   - status: "False"
-    timeout: 300s
+    timeout: 5m0s
     type: Ready
