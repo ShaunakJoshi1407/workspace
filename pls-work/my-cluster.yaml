@@ -2,7 +2,6 @@ apiVersion: cluster.x-k8s.io/v1beta1
 kind: Cluster
 metadata:
   name: my-cluster
-  namespace: default
 spec:
   controlPlaneRef:
     apiVersion: controlplane.cluster.x-k8s.io/v1beta1
@@ -17,7 +16,6 @@ apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
 kind: AWSCluster
 metadata:
   name: my-cluster
-  namespace: default
 spec:
   region: us-west-2
   sshKeyName: shaunak-key-2
@@ -26,7 +24,6 @@ apiVersion: controlplane.cluster.x-k8s.io/v1beta1
 kind: KubeadmControlPlane
 metadata:
   name: my-cluster-control-plane
-  namespace: default
 spec:
   kubeadmConfigSpec:
     clusterConfiguration:
@@ -58,7 +55,6 @@ apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
 kind: AWSMachineTemplate
 metadata:
   name: my-cluster-control-plane
-  namespace: default
 spec:
   template:
     spec:
@@ -70,7 +66,6 @@ apiVersion: cluster.x-k8s.io/v1beta1
 kind: MachinePool
 metadata:
   name: my-cluster-mp-0
-  namespace: default
 spec:
   clusterName: my-cluster
   replicas: 0
@@ -92,7 +87,6 @@ apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
 kind: AWSMachinePool
 metadata:
   name: my-cluster-mp-0
-  namespace: default
 spec:
   availabilityZones:
   - us-west-2a
@@ -107,7 +101,6 @@ apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
 kind: KubeadmConfig
 metadata:
   name: my-cluster-mp-0
-  namespace: default
 spec:
   joinConfiguration:
     nodeRegistration:
@@ -119,7 +112,6 @@ apiVersion: cluster.x-k8s.io/v1beta1
 kind: MachineHealthCheck
 metadata:
   name: my-cluster-kcp-unhealthy
-  namespace: default
 spec:
   clusterName: my-cluster
   maxUnhealthy: 100%
