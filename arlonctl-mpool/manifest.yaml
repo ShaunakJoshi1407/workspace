@@ -27,7 +27,6 @@ spec:
     name: cebc25d097ed477f949848e4feaf853b-aws
   region: us-west-2
   sshKeyName: shaunak-key-2
-  version: v1.23.8
 ---
 apiVersion: cluster.x-k8s.io/v1beta1
 kind: MachinePool
