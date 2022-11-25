@@ -38,7 +38,10 @@ spec:
   template:
     spec:
       bootstrap:
-        dataSecretName: ""
+        configRef:
+          apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
+          kind: EKSConfigTemplate
+          name: capi-quickstart-md-0
       clusterName: awsmanaged-cluster
       infrastructureRef:
         apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
