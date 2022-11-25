@@ -2,6 +2,7 @@ apiVersion: cluster.x-k8s.io/v1beta1
 kind: Cluster
 metadata:
   name: capi-quickstart
+  namespace: default
 spec:
   clusterNetwork:
     pods:
@@ -20,11 +21,8 @@ apiVersion: controlplane.cluster.x-k8s.io/v1beta1
 kind: AWSManagedControlPlane
 metadata:
   name: capi-quickstart-control-plane
+  namespace: default
 spec:
-  eksClusterName: capi-quickstart
-  identityRef:
-    kind: AWSClusterStaticIdentity
-    name: cebc25d097ed477f949848e4feaf853b-aws
   region: us-west-2
   sshKeyName: pmaru-aws1
   version: v1.23.7
@@ -33,6 +31,7 @@ apiVersion: cluster.x-k8s.io/v1beta1
 kind: MachineDeployment
 metadata:
   name: capi-quickstart-md-0
+  namespace: default
 spec:
   clusterName: capi-quickstart
   replicas: 3
@@ -56,6 +55,7 @@ apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
 kind: AWSMachineTemplate
 metadata:
   name: capi-quickstart-md-0
+  namespace: default
 spec:
   template:
     spec:
@@ -67,6 +67,7 @@ apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
 kind: EKSConfigTemplate
 metadata:
   name: capi-quickstart-md-0
+  namespace: default
 spec:
   template: {}
 ---
@@ -74,6 +75,7 @@ apiVersion: cluster.x-k8s.io/v1beta1
 kind: MachinePool
 metadata:
   name: capi-quickstart-pool-0
+  namespace: default
 spec:
   clusterName: capi-quickstart
   replicas: 3
@@ -92,6 +94,7 @@ apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
 kind: AWSManagedMachinePool
 metadata:
   name: capi-quickstart-pool-0
+  namespace: default
 spec:
   scaling:
     maxSize: 10
@@ -103,6 +106,7 @@ apiVersion: cluster.x-k8s.io/v1beta1
 kind: MachinePool
 metadata:
   name: capi-quickstart-pool-1
+  namespace: default
 spec:
   clusterName: capi-quickstart
   replicas: 3
@@ -124,13 +128,14 @@ apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
 kind: AWSMachinePool
 metadata:
   name: capi-quickstart-pool-1
+  namespace: default
 spec:
   availabilityZones:
   - us-west-2c
   awsLaunchTemplate:
-    iamInstanceProfile: nodes.cluster-api-provider-aws.sigs.k8s.io
     instanceType: t2.medium
     sshKeyName: pmaru-aws1
+    iamInstanceProfile: nodes.cluster-api-provider-aws.sigs.k8s.io
   maxSize: 10
   minSize: 1
 ---
@@ -138,4 +143,5 @@ apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
 kind: EKSConfig
 metadata:
   name: capi-quickstart-pool-1
+  namespace: default
 spec: {}
