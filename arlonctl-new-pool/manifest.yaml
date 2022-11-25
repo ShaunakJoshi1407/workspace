@@ -8,21 +8,15 @@ spec:
       cidrBlocks:
       - 192.168.0.0/16
   controlPlaneRef:
-    apiVersion: controlplane.cluster.x-k8s.io/v1beta2
+    apiVersion: controlplane.cluster.x-k8s.io/v1beta1
     kind: AWSManagedControlPlane
     name: awsmanaged-cluster-control-plane
   infrastructureRef:
-    apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
-    kind: AWSManagedCluster
-    name: awsmanaged-cluster
+    apiVersion: controlplane.cluster.x-k8s.io/v1beta1
+    kind: AWSManagedControlPlane
+    name: awsmanaged-cluster-control-plane
 ---
-apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
-kind: AWSManagedCluster
-metadata:
-  name: awsmanaged-cluster
-spec: {}
----
-apiVersion: controlplane.cluster.x-k8s.io/v1beta2
+apiVersion: controlplane.cluster.x-k8s.io/v1beta1
 kind: AWSManagedControlPlane
 metadata:
   name: awsmanaged-cluster-control-plane
@@ -48,15 +42,15 @@ spec:
         dataSecretName: ""
       clusterName: awsmanaged-cluster
       infrastructureRef:
-        apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
+        apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
         kind: AWSManagedMachinePool
         name: awsmanaged-cluster-pool-0
 ---
-apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
 kind: AWSManagedMachinePool
 metadata:
   name: awsmanaged-cluster-pool-0
 spec:
   scaling:
-    maxSize: 5
-    minSize: 0
+     minSize: 0
+     maxSize: 5	
