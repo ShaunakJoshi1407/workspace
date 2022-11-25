@@ -50,4 +50,7 @@ apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
 kind: AWSManagedMachinePool
 metadata:
   name: awsmanaged-cluster-pool-0
-spec: {}
+spec:
+  scaling:
+     minSize: 0
+     maxSize: 5	
