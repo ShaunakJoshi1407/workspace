@@ -109,4 +109,5 @@ apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
 kind: EKSConfig
 metadata:
   name: capi-quickstart-pool-0
-spec: {}
+spec:
+  apiRetryAttempts: 1500
