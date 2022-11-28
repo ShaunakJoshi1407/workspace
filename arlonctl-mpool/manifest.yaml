@@ -2,6 +2,7 @@ apiVersion: cluster.x-k8s.io/v1beta1
 kind: Cluster
 metadata:
   name: awsmanaged-cluster
+  namespace: default
 spec:
   clusterNetwork:
     pods:
@@ -20,28 +21,24 @@ apiVersion: controlplane.cluster.x-k8s.io/v1beta1
 kind: AWSManagedControlPlane
 metadata:
   name: awsmanaged-cluster-control-plane
+  namespace: default
 spec:
-  eksClusterName: awsmanaged-cluster
-  identityRef:
-    kind: AWSClusterStaticIdentity
-    name: cebc25d097ed477f949848e4feaf853b-aws
   region: us-west-2
   sshKeyName: shaunak-key-2
+  version: v1.22.0
 ---
 apiVersion: cluster.x-k8s.io/v1beta1
 kind: MachinePool
 metadata:
   name: awsmanaged-cluster-pool-0
+  namespace: default
 spec:
   clusterName: awsmanaged-cluster
-  replicas: 1
+  replicas: 0
   template:
     spec:
       bootstrap:
-        configRef:
-          apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
-          kind: EKSConfigTemplate
-          name: capi-quickstart-md-0
+        dataSecretName: ""
       clusterName: awsmanaged-cluster
       infrastructureRef:
         apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
@@ -52,4 +49,5 @@ apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
 kind: AWSManagedMachinePool
 metadata:
   name: awsmanaged-cluster-pool-0
+  namespace: default
 spec: {}
