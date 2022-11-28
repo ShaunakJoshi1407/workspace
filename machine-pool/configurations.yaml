@@ -62,6 +62,12 @@ nameReference:
   fieldSpecs:
   - path: spec/template/spec/bootstrap/configRef/name
     kind: MachineDeployment
+- kind: EKSConfig
+  group: bootstrap.cluster.x-k8s.io
+  version: v1beta1
+  fieldSpecs:
+  - path: spec/template/spec/bootstrap/configRef/name
+    kind: MachinePool
 - kind: NodeletControlPlane
   group: controlplane.cluster.x-k8s.io
   version: v1beta1
