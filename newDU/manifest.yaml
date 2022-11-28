@@ -73,7 +73,7 @@ spec:
 apiVersion: cluster.x-k8s.io/v1beta1
 kind: MachinePool
 metadata:
-  name: capi-quickstart-pool-1
+  name: capi-quickstart-pool-0
 spec:
   clusterName: capi-quickstart
   replicas: 3
@@ -83,12 +83,12 @@ spec:
         configRef:
           apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
           kind: EKSConfigTemplate
-          name: capi-quickstart-md-1
+          name: capi-quickstart-md-0
       clusterName: capi-quickstart
       infrastructureRef:
         apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
         kind: AWSManagedMachinePool
-        name: capi-quickstart-pool-1
+        name: capi-quickstart-pool-0
       version: v1.23.7
 ---
 apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
