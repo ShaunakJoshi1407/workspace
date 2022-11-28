@@ -134,3 +134,9 @@ nameReference:
   fieldSpecs:
   - path: spec/template/spec/infrastructureRef/name
     kind: MachinePool
+- kind: EKSConfig
+  group: bootstrap.cluster.x-k8s.io
+  version: v1beta2
+  fieldSpecs:
+  - path: spec/template/spec/bootstrap/configRef/name
+    kind: MachinePool
