@@ -75,7 +75,7 @@ spec:
 apiVersion: cluster.x-k8s.io/v1beta1
 kind: MachinePool
 metadata:
-  name: capi-quickstart-pool-1
+  name: capi-quickstart-pool-0
   namespace: default
 spec:
   clusterName: capi-quickstart
@@ -86,18 +86,18 @@ spec:
         configRef:
           apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
           kind: EKSConfig
-          name: capi-quickstart-pool-1
+          name: capi-quickstart-pool-0
       clusterName: capi-quickstart
       infrastructureRef:
         apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
         kind: AWSMachinePool
-        name: capi-quickstart-pool-1
+        name: capi-quickstart-pool-0
       version: v1.23.7
 ---
 apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
 kind: AWSMachinePool
 metadata:
-  name: capi-quickstart-pool-1
+  name: capi-quickstart-pool-0
   namespace: default
 spec:
   availabilityZones:
@@ -112,6 +112,6 @@ spec:
 apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
 kind: EKSConfig
 metadata:
-  name: capi-quickstart-pool-1
+  name: capi-quickstart-pool-0
   namespace: default
 spec: {}
