@@ -1,0 +1,149 @@
+apiVersion: cluster.x-k8s.io/v1beta1
+kind: Cluster
+metadata:
+  name: awsmanaged-cluster
+  namespace: default
+spec:
+  clusterNetwork:
+    pods:
+      cidrBlocks:
+      - 192.168.0.0/16
+  controlPlaneRef:
+    apiVersion: controlplane.cluster.x-k8s.io/v1beta2
+    kind: AWSManagedControlPlane
+    name: awsmanaged-cluster-control-plane
+  infrastructureRef:
+    apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
+    kind: AWSManagedCluster
+    name: awsmanaged-cluster
+---
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
+kind: AWSManagedCluster
+metadata:
+  name: awsmanaged-cluster
+  namespace: default
+spec: {}
+---
+apiVersion: controlplane.cluster.x-k8s.io/v1beta2
+kind: AWSManagedControlPlane
+metadata:
+  name: awsmanaged-cluster-control-plane
+  namespace: default
+spec:
+  region: us-west-2
+  sshKeyName: shaunak-key-2
+  version: v1.22.0
+---
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
+kind: AWSManagedMachinePool
+metadata:
+  name: awsmanaged-cluster-pool-0
+  namespace: default
+spec: 
+  scaling:
+     minSize: 0
+     maxSize: 5
+---
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
+kind: AWSMachinePool
+metadata:
+  name: awsmanaged-cluster-pool-1
+  namespace: default
+spec:
+  awsLaunchTemplate:
+    iamInstanceProfile: nodes.cluster-api-provider-aws.sigs.k8s.io
+    instanceType: t2.medium
+    sshKeyName: shaunak-key-2
+  maxSize: 10
+  minSize: 1
+---
+apiVersion: cluster.x-k8s.io/v1beta1
+kind: MachinePool
+metadata:
+  name: awsmanaged-cluster-pool-1
+  namespace: default
+spec:
+  clusterName: awsmanaged-cluster
+  replicas: 0
+  template:
+    spec:
+      bootstrap:
+        configRef:
+          apiVersion: bootstrap.cluster.x-k8s.io/v1beta2
+          kind: EKSConfig
+          name: awsmanaged-cluster-pool-1
+      clusterName: awsmanaged-cluster
+      infrastructureRef:
+        apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
+        kind: AWSMachinePool
+        name: awsmanaged-cluster-pool-1
+      version: v1.22.0
+---
+apiVersion: cluster.x-k8s.io/v1beta1
+kind: MachinePool
+metadata:
+  name: awsmanaged-cluster-pool-0
+  namespace: default
+spec:
+  clusterName: awsmanaged-cluster
+  replicas: 1
+  template:
+    spec:
+      bootstrap:
+        dataSecretName: ""
+      clusterName: awsmanaged-cluster
+      infrastructureRef:
+        apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
+        kind: AWSManagedMachinePool
+        name: awsmanaged-cluster-pool-0
+---
+apiVersion: bootstrap.cluster.x-k8s.io/v1beta2
+kind: EKSConfig
+metadata:
+  name: awsmanaged-cluster-mp-0
+  namespace: default
+spec: {}
+---
+apiVersion: cluster.x-k8s.io/v1beta1
+kind: MachineDeployment
+metadata:
+  name: awsmanaged-cluster-md-0
+  namespace: default
+spec:
+  clusterName: awsmanaged-cluster
+  replicas: 2
+  selector:
+    matchLabels: null
+  template:
+    spec:
+      bootstrap:
+        configRef:
+          apiVersion: bootstrap.cluster.x-k8s.io/v1beta2
+          kind: EKSConfigTemplate
+          name: awsmanaged-cluster-md-0
+      clusterName: awsmanaged-cluster
+      infrastructureRef:
+        apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
+        kind: AWSMachineTemplate
+        name: awsmanaged-cluster-md-0
+      version: v1.22.0
+---
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
+kind: AWSMachineTemplate
+metadata:
+  name: awsmanaged-cluster-md-0
+  namespace: default
+spec:
+  template:
+    spec:
+      iamInstanceProfile: nodes.cluster-api-provider-aws.sigs.k8s.io
+      instanceType: t2.medium
+      sshKeyName: shaunak-key-2
+---
+apiVersion: bootstrap.cluster.x-k8s.io/v1beta2
+kind: EKSConfigTemplate
+metadata:
+  name: awsmanaged-cluster-md-0
+  namespace: default
+spec:
+  template: {}
