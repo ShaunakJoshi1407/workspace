@@ -58,7 +58,7 @@ metadata:
   name: awsmanaged-cluster-pool-1
 spec:
   clusterName: awsmanaged-cluster
-  replicas: 0
+  replicas: 1
   template:
     spec:
       bootstrap:
