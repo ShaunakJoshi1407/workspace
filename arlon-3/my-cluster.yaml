@@ -1,0 +1,116 @@
+apiVersion: cluster.x-k8s.io/v1beta1
+kind: Cluster
+metadata:
+  name: my-cluster
+  namespace: default
+spec:
+  controlPlaneRef:
+    apiVersion: controlplane.cluster.x-k8s.io/v1beta1
+    kind: KubeadmControlPlane
+    name: my-cluster-control-plane
+  infrastructureRef:
+    apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+    kind: AWSCluster
+    name: my-cluster
+---
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+kind: AWSCluster
+metadata:
+  name: my-cluster
+  namespace: default
+spec:
+  region: us-west-2
+  sshKeyName: shaunak-key-2
+---
+apiVersion: controlplane.cluster.x-k8s.io/v1beta1
+kind: KubeadmControlPlane
+metadata:
+  name: my-cluster-control-plane
+  namespace: default
+spec:
+  kubeadmConfigSpec:
+    clusterConfiguration:
+      apiServer:
+        extraArgs:
+          cloud-provider: aws
+      controllerManager:
+        extraArgs:
+          cloud-provider: aws
+    initConfiguration:
+      nodeRegistration:
+        kubeletExtraArgs:
+          cloud-provider: aws
+        name: '{{ ds.meta_data.local_hostname }}'
+    joinConfiguration:
+      nodeRegistration:
+        kubeletExtraArgs:
+          cloud-provider: aws
+        name: '{{ ds.meta_data.local_hostname }}'
+  machineTemplate:
+    infrastructureRef:
+      apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+      kind: AWSMachineTemplate
+      name: my-cluster-control-plane
+  replicas: 1
+  version: v1.24.0
+---
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+kind: AWSMachineTemplate
+metadata:
+  name: my-cluster-control-plane
+  namespace: default
+spec:
+  template:
+    spec:
+      iamInstanceProfile: control-plane.cluster-api-provider-aws.sigs.k8s.io
+      instanceType: t2.medium
+      sshKeyName: shaunak-key-2
+---
+apiVersion: cluster.x-k8s.io/v1beta1
+kind: MachinePool
+metadata:
+  name: my-cluster-mp-0
+  namespace: default
+spec:
+  clusterName: my-cluster
+  replicas: 0
+  template:
+    spec:
+      bootstrap:
+        configRef:
+          apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
+          kind: KubeadmConfig
+          name: my-cluster-mp-0
+      clusterName: my-cluster
+      infrastructureRef:
+        apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+        kind: AWSMachinePool
+        name: my-cluster-mp-0
+      version: v1.24.0
+---
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+kind: AWSMachinePool
+metadata:
+  name: my-cluster-mp-0
+  namespace: default
+spec:
+  availabilityZones:
+  - us-west-2a
+  awsLaunchTemplate:
+    iamInstanceProfile: nodes.cluster-api-provider-aws.sigs.k8s.io
+    instanceType: t2.medium
+    sshKeyName: shaunak-key-2
+  maxSize: 10
+  minSize: 1
+---
+apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
+kind: KubeadmConfig
+metadata:
+  name: my-cluster-mp-0
+  namespace: default
+spec:
+  joinConfiguration:
+    nodeRegistration:
+      kubeletExtraArgs:
+        cloud-provider: aws
+      name: '{{ ds.meta_data.local_hostname }}'
